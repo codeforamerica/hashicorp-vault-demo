@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'gs-vault-config'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.spring.io/milestone/"
+    }
+}
+
+ext {
+    set('springCloudVersion', "2022.0.4")
+}
+
+dependencies {
+    implementation('org.springframework.cloud:spring-cloud-starter-vault-config')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
