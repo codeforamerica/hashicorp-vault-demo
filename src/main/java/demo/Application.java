@@ -1,20 +1,29 @@
 package demo;
 
+import demo.config.AwsConfigurationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@EnableConfigurationProperties(DemoConfiguration.class)
+@RestController
+@EnableConfigurationProperties(AwsConfigurationProperties.class)
 public class Application implements CommandLineRunner {
 
-    private final DemoConfiguration configuration;
+    private final AwsConfigurationProperties configuration;
 
-    public Application(DemoConfiguration configuration) {
+    public Application(AwsConfigurationProperties configuration) {
         this.configuration = configuration;
+    }
+
+    @RequestMapping("/")
+    public String home() {
+        return "Hello World!";
     }
 
     public static void main(String[] args) {
@@ -28,8 +37,8 @@ public class Application implements CommandLineRunner {
 
         logger.info("----------------------------------------");
         logger.info("Configuration properties");
-        logger.info("   example.username is {}", configuration.getUsername());
-        logger.info("   example.password is {}", configuration.getPassword());
+//        logger.info("   example.username is {}", configuration.getUsername());
+//        logger.info("   example.password is {}", configuration.getPassword());
         logger.info("----------------------------------------");
     }
 }
