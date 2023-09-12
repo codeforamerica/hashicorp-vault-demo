@@ -22,7 +22,7 @@ public class AWSConfiguration {
     @Autowired
     AwsConfigurationProperties awsConfigurationProperties;
 
-    @Value("${cloud.aws.region}")
+    @Value("us-east-1")
     private String region;
 
     @Bean
