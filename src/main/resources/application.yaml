@@ -1,4 +1,7 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
   config:
     import: vault://
   cloud:
@@ -14,11 +17,11 @@ spring:
       aws:
         enabled: true
         region: us-east-1
-        role: sts-vault-role
+        role: demo_role
         backend: aws
-        credential-type: assumed_role
+        role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/sts-app-role
+        credential-type: federation_token
         access-key-property: cloud.aws.credentials.accessKey
         secret-key-property: cloud.aws.credentials.secretKey
         session-token-key-property: cloud.aws.credentials.sessionToken
         ttl: 3600s
-        role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/sts-app-role

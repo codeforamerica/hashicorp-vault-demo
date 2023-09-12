@@ -1,7 +1,8 @@
 package demo.hashicorp.sts.config;
 
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +23,6 @@ public class AWSConfiguration {
     @Autowired
     AwsConfigurationProperties awsConfigurationProperties;
 
-    @Value("us-east-1")
-    private String region;
-
     @Bean
     @RefreshScope
     public AWSSessionCredentials basicAWSCredentials() {
@@ -35,6 +33,7 @@ public class AWSConfiguration {
     @Bean
     @RefreshScope
     public AmazonS3 amazonS3Client(AWSCredentials awsCredentials){
+        String region = "us-east-1";
         return AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))

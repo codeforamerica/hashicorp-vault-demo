@@ -6,7 +6,7 @@ vault write aws/config/root \
   secret_key=${AWS_SECRET_KEY} \
   region=${AWS_REGION}
 vault write aws/roles/demo_role \
-    credential_type=iam_user \
+    credential_type=federation_token \
     policy_document=-<<EOF
 {
   "Version": "2012-10-17",

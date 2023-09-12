@@ -18,9 +18,19 @@ ext {
     set('springCloudVersion', "2022.0.4")
 }
 
+def props = new Properties()
+if (file(".env").exists()) {
+    file(".env").withInputStream { props.load(it) }
+}
+
 dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-vault-config')
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.529')
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.amazonaws:aws-java-sdk-s3'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
