@@ -1,18 +1,15 @@
-package demo.config;
+package demo.hashicorp.sts.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import static demo.config.AwsConfigurationProperties.PREFIX;
-
-@ConfigurationProperties(PREFIX)
+@ConfigurationProperties(prefix="cloud.aws.credentials")
 @Component
 public class AwsConfigurationProperties {
 
     /**
      * Prefix for configuration properties.
      */
-    public static final String PREFIX = "cloud.aws.credentials";
 
     private String accessKey;
 

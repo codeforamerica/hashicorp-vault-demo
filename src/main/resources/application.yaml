@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: vault://
   cloud:
     vault:
       enabled: true
@@ -11,6 +13,7 @@ spring:
           expiry-threshold: 5m
       aws:
         enabled: true
+        region: us-east-1
         role: sts-vault-role
         backend: aws
         credential-type: assumed_role

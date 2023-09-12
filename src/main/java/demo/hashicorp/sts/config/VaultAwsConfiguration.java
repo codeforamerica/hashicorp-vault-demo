@@ -1,4 +1,4 @@
-package demo.config;
+package demo.hashicorp.sts.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.BeansException;
@@ -35,7 +35,7 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
 
     @Autowired ConfigurationPropertiesRebinder rebinder;
 
-    @Value("${sping.cloud.vault.aws.backend}")
+    @Value("${spring.cloud.vault.aws.backend}")
     String vaultAwsBackend;
 
     @Value("${spring.cloud.vault.aws.role}")
