@@ -1,6 +1,7 @@
 package demo.hashicorp.sts.config;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,19 +11,21 @@ import org.springframework.cloud.context.properties.ConfigurationPropertiesRebin
 import org.springframework.cloud.context.scope.refresh.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.event.SecretLeaseCreatedEvent;
 
 @Configuration
+@Slf4j
 @ConditionalOnProperty(name="spring.cloud.vault.aws.enabled")
 @ConditionalOnBean(SecretLeaseContainer.class)
 public class VaultAwsConfiguration implements ApplicationContextAware {
 
-    private static final Logger logger = LoggerFactory.getLogger(VaultAwsConfiguration.class);
 
     private static final String STS_PATH = "/sts/";
 
@@ -43,7 +46,7 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
 
     @PostConstruct
     private void postConstruct() {
-        logger.info("Register lease listener");
+        log.info("Register lease listener");
 
         container.addLeaseListener(leaseEvent -> {
 
@@ -58,7 +61,7 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
                 refresh("basicAWSCredentials");
                 refresh("amazonS3Client");
 
-                logger.info("SecretLeaseCreatedEvent received and applied for: "+leaseEvent.getSource().getPath());
+                log.info("SecretLeaseCreatedEvent received and applied for: "+leaseEvent.getSource().getPath());
             }
         });
     }
@@ -66,26 +69,26 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
     private void rebind(String bean){
         try {
             boolean success = this.rebinder.rebind(bean);
-            if (logger.isInfoEnabled()) {
-                logger.info(String.format(
+            if (log.isInfoEnabled()) {
+                log.info(String.format(
                         "Attempted to rebind bean '%s' with updated AWS secrets from vault, success: %s",
                         bean, success));
             }
         } catch (Exception ex) {
-            logger.error("Exception rebinding "+bean,ex);
+            log.error("Exception rebinding "+bean,ex);
         }
     }
 
     private void refresh(String bean) {
         try {
             boolean success = this.context.getBean(RefreshScope.class).refresh(bean);
-            if (logger.isInfoEnabled()) {
-                logger.info(String.format(
+            if (log.isInfoEnabled()) {
+                log.info(String.format(
                         "Attempted to refresh bean '%s' with updated AWS secrets from vault, success: %s",
                         bean, success));
             }
         } catch (Exception ex) {
-            logger.error("Exception rebinding "+bean,ex);
+            log.error("Exception rebinding "+bean,ex);
         }
     }
 
