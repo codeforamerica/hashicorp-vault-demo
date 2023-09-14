@@ -14,9 +14,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.event.SecretLeaseCreatedEvent;
 
@@ -57,6 +54,7 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
                 rebind("awsConfigurationProperties");
 
                 // refresh additional bean dependencies
+
                 refresh("AWSConfiguration");
                 refresh("basicAWSCredentials");
                 refresh("amazonS3Client");
@@ -81,7 +79,8 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
 
     private void refresh(String bean) {
         try {
-            boolean success = this.context.getBean(RefreshScope.class).refresh(bean);
+            RefreshScope refreshScope = this.context.getBean(RefreshScope.class);
+            boolean success = refreshScope.refresh(bean);
             if (log.isInfoEnabled()) {
                 log.info(String.format(
                         "Attempted to refresh bean '%s' with updated AWS secrets from vault, success: %s",

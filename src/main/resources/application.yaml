@@ -24,3 +24,8 @@ spring:
         secret-key-property: cloud.aws.credentials.secretKey
         session-token-key-property: cloud.aws.credentials.sessionToken
         ttl: 3600s
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: refresh

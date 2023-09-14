@@ -2,13 +2,8 @@ package demo.hashicorp.sts;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import demo.hashicorp.sts.config.AwsConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultTemplate;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.domain.RequestedSecret;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +44,7 @@ public class UploadController {
         String fileName = multipartFile.getOriginalFilename();
         this.leaseContainer.start();
         RequestedSecret secret = this.leaseContainer.requestRenewableSecret("aws/sts/demo_role");
+        this.leaseContainer.addRequestedSecret(secret);
         log.info(String.valueOf(secret));
         return this.amazonS3.putObject(BUCKET_NAME, fileName, file);
     }
