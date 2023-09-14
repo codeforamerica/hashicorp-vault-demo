@@ -1,3 +1,9 @@
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
 spring:
   servlet:
     multipart:
@@ -6,7 +12,7 @@ spring:
     vault:
       enabled: true
       host: 127.0.0.1
-      token: hvs.lxNJFy8BcpRU0WIXrMNRBOPS
+      token: 0000-0000-0000
       port: 8200
       scheme: http
       config:
@@ -24,8 +30,3 @@ spring:
         secret-key-property: cloud.aws.credentials.secretKey
         session-token-key-property: cloud.aws.credentials.sessionToken
         ttl: 3600s
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: refresh

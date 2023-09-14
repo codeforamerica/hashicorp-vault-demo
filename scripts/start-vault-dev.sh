@@ -1,1 +1,1 @@
-vault server -dev
+vault server -dev -dev-root-token-id="0000-0000-0000"

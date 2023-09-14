@@ -1,11 +1,9 @@
 package demo.hashicorp.sts;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import demo.hashicorp.sts.config.AwsConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
-import org.springframework.vault.core.lease.domain.RequestedSecret;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +27,9 @@ public class UploadController {
     @Autowired
     private SecretLeaseContainer leaseContainer;
 
+    @Autowired
+    AwsConfigurationProperties properties;
+
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
@@ -39,13 +40,12 @@ public class UploadController {
 
 
     @PostMapping("/upload-file")
-    public PutObjectResult uploadFile(@RequestPart(value="file") MultipartFile multipartFile) throws IOException{
+    public Boolean uploadFile(@RequestPart(value="file") MultipartFile multipartFile) throws IOException{
         File file = convertMultiPartToFile(multipartFile);
         String fileName = multipartFile.getOriginalFilename();
         this.leaseContainer.start();
-        RequestedSecret secret = this.leaseContainer.requestRenewableSecret("aws/sts/demo_role");
-        this.leaseContainer.addRequestedSecret(secret);
-        log.info(String.valueOf(secret));
-        return this.amazonS3.putObject(BUCKET_NAME, fileName, file);
+        this.leaseContainer.requestRenewableSecret("aws/sts/demo_role");
+        this.amazonS3.putObject(BUCKET_NAME, fileName, file);
+        return true;
     }
 }

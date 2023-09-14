@@ -1,5 +1,6 @@
 package demo.hashicorp.sts.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -14,6 +15,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
+@Slf4j
 @ConditionalOnProperty(name="spring.cloud.vault.aws.enabled")
 @RefreshScope
 public class AWSConfiguration {

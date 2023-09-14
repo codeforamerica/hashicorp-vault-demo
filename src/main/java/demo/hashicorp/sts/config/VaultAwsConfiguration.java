@@ -11,11 +11,14 @@ import org.springframework.cloud.context.properties.ConfigurationPropertiesRebin
 import org.springframework.cloud.context.scope.refresh.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.event.SecretLeaseCreatedEvent;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Configuration
 @Slf4j
@@ -30,6 +33,9 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
 
     @Autowired
     SecretLeaseContainer container;
+
+    @Autowired
+    AwsConfigurationProperties properties;
 
     @Autowired ConfigurableEnvironment configurableEnvironment;
 
@@ -59,6 +65,16 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
                 refresh("basicAWSCredentials");
                 refresh("amazonS3Client");
 
+                String retrievedSecret = (((SecretLeaseCreatedEvent) leaseEvent).getSecrets().toString());
+                Map<String, String> map = Arrays.stream(
+                        retrievedSecret.substring( 1, retrievedSecret.length() - 1 )
+                                .replace(" ", "")
+                                .split(","))
+                        .map(s -> s.split("="))
+                        .collect(Collectors.toMap(s -> s[0], s -> s[1]));
+                properties.setSessionToken(map.get("security_token"));
+                properties.setAccesskey(map.get("access_key"));
+                properties.setSecretKey(map.get("secret_key"));
                 log.info("SecretLeaseCreatedEvent received and applied for: "+leaseEvent.getSource().getPath());
             }
         });
