@@ -43,6 +43,12 @@ dependencyManagement {
     }
 }
 
+task webjar(type: Jar, dependsOn: "jar") {
+    from(fileTree("dist")) {
+        into "META-INF/resources"
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
