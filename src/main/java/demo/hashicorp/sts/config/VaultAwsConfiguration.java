@@ -1,5 +1,6 @@
 package demo.hashicorp.sts.config;
 
+import demo.hashicorp.sts.Lease;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -16,8 +17,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.vault.core.lease.SecretLeaseContainer;
 import org.springframework.vault.core.lease.event.SecretLeaseCreatedEvent;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -40,6 +41,8 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
     @Autowired ConfigurableEnvironment configurableEnvironment;
 
     @Autowired ConfigurationPropertiesRebinder rebinder;
+
+    public List<Lease> leases = new ArrayList<>();
 
     @Value("${spring.cloud.vault.aws.backend}")
     String vaultAwsBackend;
@@ -66,15 +69,21 @@ public class VaultAwsConfiguration implements ApplicationContextAware {
                 refresh("amazonS3Client");
 
                 String retrievedSecret = (((SecretLeaseCreatedEvent) leaseEvent).getSecrets().toString());
-                Map<String, String> map = Arrays.stream(
+                Map<String, String> secretMap = Arrays.stream(
                         retrievedSecret.substring( 1, retrievedSecret.length() - 1 )
                                 .replace(" ", "")
                                 .split(","))
                         .map(s -> s.split("="))
                         .collect(Collectors.toMap(s -> s[0], s -> s[1]));
-                properties.setSessionToken(map.get("security_token"));
-                properties.setAccesskey(map.get("access_key"));
-                properties.setSecretKey(map.get("secret_key"));
+                Date date = new Date();
+                Timestamp currentTimestamp = new Timestamp(date.getTime());
+                String ttl = secretMap.get("ttl");
+                Timestamp expiryTime = new Timestamp(currentTimestamp.getTime() + (Integer.parseInt(ttl) * 1000L));
+                Lease lease = new Lease(currentTimestamp.toString(), vaultAwsRole, expiryTime.toString(), "", "success");
+                leases.add(lease);
+                properties.setSessionToken(secretMap.get("security_token"));
+                properties.setAccesskey(secretMap.get("access_key"));
+                properties.setSecretKey(secretMap.get("secret_key"));
                 log.info("SecretLeaseCreatedEvent received and applied for: "+leaseEvent.getSource().getPath());
             }
         });
