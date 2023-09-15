@@ -1,10 +1,333 @@
+/* This file is provided for addition of custom CSS styles */
+
 :root {
-    --primary: #00284D;
-    --light: #121111;
-    --primary-light: #C0CEDB;
-    --dark-grey: #121111;
+  --primary: black;
+  --light: #C0CEDB;
+  --primary-light: #F5F5F5;
+  --dark-grey: #121111;
 }
 
 body {
-    background-color: var(--light);
+  background-color: var(--primary-light);
+}
+
+.spacing-left-1_5 {
+  padding-left: 1.5em;
+}
+
+.spacing-right-10 {
+  margin-right: 10px;
+}
+
+.align-with-boxed-content {
+  padding: 2.5rem 0;
+  margin: auto;
+  border-radius: 3px;
+  max-width: 35rem;
+}
+
+.legal-stuff-header {
+  padding: 2.5rem 0 -2.5rem 0;
+  margin: auto;
+  border-radius: 3px;
+  max-width: 35rem;
+}
+
+.legal-stuff-window {
+  border: 2px solid black;
+  height: 35rem;
+  overflow-y: scroll;
+  padding-right: calc(1.5rem + 12px);
+}
+
+/* Works for Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.textarea-readonly::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.textarea-readonly::-webkit-scrollbar:vertical {
+  width: 12px;
+}
+
+.textarea-readonly::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+.textarea-readonly::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.notice-container {
+  max-width: 55rem;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notice-blue {
+  background: #E9F6FF;
+  border: 1px solid #003865;
+  border-radius: 3px;
+  position: relative;
+  padding: 20px 15px 0 15px;
+}
+
+.steps-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.steps-box svg {
+  flex-shrink: 0;
+}
+
+.vertical-steps .notice-blue {
+  margin-bottom: -10px;
+  margin-top: -10px;
+}
+
+.notice-blue .width-one-sixth {
+  text-align: center;
+}
+
+.vertical-steps:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  left: 50%;
+  background-color: #003964;
+}
+
+.email-confirmation-box {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.email-confirmation-box strong {
+  color: #00891B;
+}
+
+.email-confirmation-box svg {
+  flex-shrink: 0;
+}
+
+.toolbar {
+   align-items: flex-start;
+   padding-top: 12px;
+}
+
+.toolbar__wrapper {
+  height: 7rem;
+}
+
+.menu-button-links button {
+  min-width: 160px;
+  padding: 5px 10px;
+  margin-bottom: 0;
+  margin-right: 0;
+  display: flex;
+  position: relative;
+  background-color: white;
+  border: none;
+  font-size: 16px;
+  color: black;
+  border-radius: 5px;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.menu-button-links button > span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.3;
+}
+
+.menu-button-links button strong {
+  font-size: 16px;
+}
+
+.menu-button-links .small-text {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.menu-button-links [role="menu"] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: none;
+  position: absolute;
+  border: 2px solid var(--dark-grey);
+  border-radius: 5px;
+  background-color: white;
+  z-index: 3;
+}
+
+.menu-button-links [role="menuitem"],
+.menu-button-links [role="separator"] {
+  margin: 0;
+  padding: 10px 15px;
+  display: block;
+  border: none;
+  color: teal;
+  font-size: 15px;
+}
+
+.menu-button-links button svg {
+  margin-right: 12px;
+  align-self: center;
+}
+
+/* focus styling */
+.menu-button-links button:focus,
+.menu-button-links [role="menuitem"]:focus,
+.menu-button-links button:hover {
+  color: var(--dark-grey)
+}
+
+
+/* TODO Consider pulling these out into variables in FFL itself */
+.toolbar__wrapper, .main-footer, .button--primary, .dz-button {
+  color: #FFF;
+  background-color: var(--primary);
+}
+
+.input_container {
+  border: 1px solid #e5e5e5;
+}
+
+input[type=file]::file-selector-button {
+  background-color: #feec7b;
+  color: #000;
+  border: 0px;
+  border-right: 1px solid #e5e5e5;
+  padding: 10px 15px;
+  margin-right: 20px;
+  transition: .5s;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #eee;
+  border: 0px;
+  border-right: 1px solid #e5e5e5;
+}
+
+.button--secondary {
+  color: #121111;
+  background-color: #feec7b
+}
+
+.main-footer-la {
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+
+  background: #00284D;
+}
+
+.center {
+  display: block;
+  margin-left: auto !important;
+  margin-right: auto;
+  width: 50%;
+}
+
+.display-inline-grid {
+  display: inline-grid;
+}
+
+.max-width-logo {
+  max-width: 18rem;
+  margin-top: 4px;
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logos > div {
+  margin-right: 15px;
+}
+
+.seal {
+  float: left;
+  padding-right: 20px;
+  margin-right: 20px;
+  border-right: 1px solid black;
+}
+
+.blurb {
+  background-color: white;
+  border-radius: 1rem;
+  border: 2px solid black;
+  margin: 25px 0;
+  padding: 15px;
+  font-size: 16px;
+}
+
+.bulleted-list-items {
+  font-size: 16px;
+  padding-left: 1rem;
+  list-style: disc;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.font-size--smaller {
+  font-size: 16px;
+}
+
+/*.slab--vault-yellow {*/
+/*  background-color: #fff9cf;*/
+/*}*/
+
+.link-div {
+  display: block;
+  height: 100%;
+}
+
+.vl {
+  border-left: 3px solid white;
+  height: 100px;
+  top: 0;
+}
+
+.privacy-policy-choices {
+  color: #388081
+}
+
+.slab--yellow {
+  background-color: #FEF1D9;
+}
+
+.page-wrapper {
+  padding-bottom: 140px;
+}
+
+.clipboard-icon {
+  position: relative;
+  bottom: -1px;
 }

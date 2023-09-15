@@ -3,10 +3,9 @@
 <body>
 <div class="page-wrapper">
   <div th:replace="fragments/toolbar :: toolbar"></div>
+  <main id="content" role="main" class="form-card spacing-above-35">
   <section class="slab">
     <div class="grid">
-<!--      <div th:replace="fragments/goBack :: goBackLink"></div>-->
-      <main id="content" role="main" class="form-card spacing-above-35">
         <th:block
             th:replace="'fragments/cardHeader' :: cardHeader(header=#{upload.header}, subtext=#{upload.subtext})"/>
         <div class="form-card__content">
@@ -14,45 +13,45 @@
           <div>
             <form action="/upload-file" method="post" enctype="multipart/form-data">
 
-              <p>
-                <input type="file" name="file" required />
-              </p>
+              <input id="file-upload" type="file" name="file" class="spacing-below-15"/>
 
-              <p>
                 <button type="submit" class="button button--primary">Upload File</button>
-              </p>
+
             </form>
-
-            <table class="data-table">
-              <thead>
-              <tr>
-<!--                <th>Lease Requested Time</th>-->
-                <th>Lease Expiry Time</th>
-                <th>Resource Requested</th>
-                <th>Upload Request</th>
-                <th>Upload Status</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="lease : ${leases}">
-<!--                <td th:text="${lease.leaseRequestedTime}"></td>-->
-                <td th:text="${lease.leaseExpiryTime}"></td>
-                <td th:text="${lease.awsRole}"></td>
-                <td th:text="${lease.uploadRequest}"></td>
-                <td th:text="${lease.uploadRequestStatus}"></td>
-
-              </tr>
-              </tbody>
-            </table>
           </div>
 
-        </div>
-        <div class="form-card__footer">
 
         </div>
-      </main>
+
     </div>
   </section>
+  <section class="slab slab--yellow">
+    <h2 class="heading-35">Leased Credential Audit</h2>
+
+    <p>A more comprehensive audit is available from the <a href="http://127.0.0.1:8200">vault UI </a></p>
+
+    <table class="data-table">
+      <thead>
+      <tr>
+        <th>Lease Expiry Time</th>
+        <th>Resource Requested</th>
+        <th>Upload Request</th>
+        <th>Upload Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="lease : ${leases}">
+        <td th:text="${lease.leaseExpiryTime}"></td>
+        <td th:text="${lease.awsRole}"></td>
+        <td th:text="${lease.uploadRequest}"></td>
+        <td th:text="${lease.uploadRequestStatus}"></td>
+
+      </tr>
+      </tbody>
+    </table>
+
+  </section>
+  </main>
 </div>
 <th:block th:replace="fragments/footer :: footer"/>
 </body>
